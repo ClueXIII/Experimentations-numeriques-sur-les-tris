@@ -11,17 +11,18 @@ long int tri::TriBulles(int *T, int n)
 {
     long int nbEchange = 0;
 
-    for (int i = 1; i < n-1; ++i) {
-        for (int j = n; j > i+1; --j) {
+    for (int i = 0; i < n-1; ++i) {
+        for (int j = n-1; j > i; --j) {
             if (T[j] < T[j-1]) {
                 swap(T[j], T[j-1]);
                 nbEchange++;
             }
         }
     }
-    
+
     return nbEchange;
 }
+
 
 long int tri::TriInsertion(int *T, int n)
 {
@@ -69,36 +70,62 @@ long int tri::TriRapide(int *T, int n, int a, int b) // compte le nombre d'écha
 long int tri::TriTas(int *T, int n, int a, int b)
 {
     long int nbEchange = 0;
-    for (int i = (n)/2; i >= 1; --i) {
-        nbEchange += entasser(T, n, i);
+
+    // Construction du tas (à partir de l'indice 0)
+    for (int k = n / 2 - 1; k >= 0; k--) {
+        nbEchange += Reorganiser(T, k, n);
     }
-    for (int i = b; i >= 2; --i) {
-        swap(T[a], T[i]);
+
+    // Extraction des éléments du tas
+    for (int k = n - 1; k > 0; k--) {
+        // Suppression du min
+        swap(T[0], T[k]);
         nbEchange++;
-        n--;
-        nbEchange+=entasser(T, n, a);
+        nbEchange += Reorganiser(T, 0, k);
     }
+
     return nbEchange;
 }
 
-long int tri::entasser(int *T, int n, int i)
+long int tri::Reorganiser(int *T, int j, int n)
 {
+    int i = j;
+    int m = 0;
     long int nbEchange = 0;
-    int l = 2*i;
-    int r = 2*i+1;
-    int max = i;
-    if (l <= n && T[l] > T[i]) {
-        max = l;
+
+    while (2 * i + 1 < n) {
+        m = 2 * i + 1; // Fils gauche
+
+        if (2 * i + 2 < n && T[2 * i + 2] > T[2 * i + 1]) {
+            m = 2 * i + 2; // Fils droit
+        }
+
+        if (T[i] < T[m]) {
+            swap(T[i], T[m]);
+            nbEchange++;
+            i = m;
+        } else {
+            break;
+        }
     }
-    if (r <= n && T[r] > T[i]) {
-        max = r;
-    }
-    if (max != i) {
-        swap(T[i], T[max]);
-        nbEchange++;
-        nbEchange += entasser(T, n, max);
-    }
+
     return nbEchange;
+}
+
+
+long int tri::Suppression(int *T, int n,int & nbEchange)
+{
+    int min = T[0];
+    T[0] = T[n];
+    n--;
+    nbEchange+= Reorganiser(T, 0, n);
+    return min;
+}
+
+
+tri::~tri()
+{
+    cout << "Destruction de l'objet tri" << endl;
 }
 
 void tri::Test(const int n)
@@ -140,22 +167,20 @@ void tri::afficherLigne(int *T, int n)
 {
     vector<int> temp(T, T + n);   // copie du tableau pour le remettre dans le meme désordre apres chaque tri 
     
-    time_t startTime = time(NULL);
+    time_t startTime = time(NULL);/*
     cout << setw(5) << n << "|" << setw(20) << "Tri à bulles" << " |" << setw(20) << TriBulles(temp.data(), n) << "|" << setw(20) <<  difftime(time(NULL), startTime) << endl;
     temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
-    
+   
     startTime = time(NULL);
     cout << setw(5) << n << "|" << setw(20) << "Tri par insertion" << "|" << setw(20) << TriInsertion(temp.data(), n) << "|" << setw(20) <<  difftime(time(NULL), startTime) << endl;
     temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
-    
+*/
     startTime = time(NULL);
     cout << setw(5) << n << "|" << setw(20) << "Tri rapide" << "|" << setw(20) << TriRapide(temp.data(), n, 0, n-1) << "|" << setw(20) <<  difftime(time(NULL), startTime) << endl;
-    affichertab(temp.data(), n);
     temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
-    
+
     startTime = time(NULL);
     cout << setw(5) << n << "|" << setw(20) << "Tri par tas" << "|" << setw(20) << TriTas(temp.data(), n, 0, n-1) << "|" << setw(20) <<  difftime(time(NULL), startTime) << endl;
-    temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
 
     cout << string(69, '-') << endl;
 }
@@ -163,7 +188,7 @@ void tri::afficherLigne(int *T, int n)
 void tri::affichertab(int *T, int n)
 {
     for (int i = 0; i < n; ++i) {
-        cout << T[i] << " ";
+        cout << T[i] << "[" << i << "]" << " ";
     }
     cout << endl;
 }

@@ -1,3 +1,5 @@
+#include <vector>
+
 class tri{
     public: 
     // Ces fonctions realisent les tris associes. Chacune devra renvoyer le nombre total d'echanges effectues
@@ -8,5 +10,7 @@ class tri{
     void Test(const int n);
     void afficherLigne(int *T, int n);
     void affichertab(int *T, int n);
-    long int entasser(int *T, int n, int i);
+    long int Reorganiser(int *T, int j, int n); // reorganise le tas a partir de la case j de T de taille n
+    long int Suppression(int *T, int n, int & nbEchange); // supprime le premier element du tas de taille n
+    ~tri();
 };

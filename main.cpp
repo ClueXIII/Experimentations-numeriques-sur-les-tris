@@ -9,6 +9,6 @@ using namespace std;
 int main()
 {
     tri t;
-    t.Test(100);
+    t.Test(1000000);
     return 0;
 }
