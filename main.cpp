@@ -9,6 +9,21 @@ using namespace std;
 int main()
 {
     tri t;
-    t.Test(1000000);
+    cout << "n = 10" << endl;
+    t.Test(10);
+    cout << endl;
+    cout << "n = 100" << endl;
+    t.Test(100);
+    cout << endl;
+    cout << "n = 1000" << endl;
+    t.Test(1000);
+    cout << endl;
+    cout << "n = 10000" << endl;
+    t.Test(10000);
+    cout << endl;
+    cout << "n = 100000" << endl;
+    t.Test(100000);
+    cout << endl;
+    cout << "n = 1000000" << endl;
     return 0;
 }

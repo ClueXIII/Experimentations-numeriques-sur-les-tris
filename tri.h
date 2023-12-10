@@ -12,5 +12,7 @@ class tri{
     void affichertab(int *T, int n);
     long int Reorganiser(int *T, int j, int n); // reorganise le tas a partir de la case j de T de taille n
     long int Suppression(int *T, int n, int & nbEchange); // supprime le premier element du tas de taille n
+    bool estTas(int *T, int n); // verifie si le tableau T de taille n est un tas
+    bool estTrie(int *T, int n); // verifie si le tableau T de taille n est trie
     ~tri();
 };
