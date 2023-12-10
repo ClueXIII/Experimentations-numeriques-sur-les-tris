@@ -7,7 +7,7 @@
 
 using namespace std;
 
-long int tri::TriBulles(int *T, int n)
+long int tri::TriBulles(int *T, int n) 
 {
     long int nbEchange = 0;
 
@@ -72,7 +72,7 @@ long int tri::TriTas(int *T, int n, int a, int b)
     long int nbEchange = 0;
 
     // Construction du tas (à partir de l'indice 0)
-    for (int k = n / 2 - 1; k >= 0; k--) {
+    for (int k = n / 2 - 1; k >= 0; k--) { 
         nbEchange += Reorganiser(T, k, n);
     }
 
@@ -83,7 +83,6 @@ long int tri::TriTas(int *T, int n, int a, int b)
         nbEchange++;
         nbEchange += Reorganiser(T, 0, k);
     }
-
     return nbEchange;
 }
 
@@ -96,11 +95,11 @@ long int tri::Reorganiser(int *T, int j, int n)
     while (2 * i + 1 < n) {
         m = 2 * i + 1; // Fils gauche
 
-        if (2 * i + 2 < n && T[2 * i + 2] > T[2 * i + 1]) {
+        if (2 * i + 2 < n && T[2 * i + 2] > T[2 * i + 1]) { // Si fils droit existe et est plus grand que fils gauche (+ verif si fils droit existe)
             m = 2 * i + 2; // Fils droit
         }
 
-        if (T[i] < T[m]) {
+        if (T[i] < T[m]) { // Si père plus petit que fils
             swap(T[i], T[m]);
             nbEchange++;
             i = m;
@@ -121,7 +120,7 @@ long int tri::Suppression(int *T, int n,int & nbEchange)
     return min;
 }
 
-bool tri::estTas(int *T, int n)
+bool tri::estTas(int *T, int n) // verifie si le tableau T de taille n est un tas
 {
     bool estTas = true;
     for (int i = 0; i < n; ++i) {
@@ -135,7 +134,7 @@ bool tri::estTas(int *T, int n)
     return estTas;
 }
 
-bool tri::estTrie(int *T, int n)
+bool tri::estTrie(int *T, int n) // verifie si le tableau T de taille n est trie
 {
     bool estTrie = true;
     for (int i = 0; i < n-1; ++i) {
@@ -160,7 +159,7 @@ void tri::Test(const int n)
     volatile vector<int> temp;
     
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i) { // remplissage des 5 tableaux avec des entiers aléatoires entre 100 et 2000
         T1.push_back(rand() % 1901 + 100);
         T2.push_back(rand() % 1901 + 100);
         T3.push_back(rand() % 1901 + 100);
@@ -170,14 +169,15 @@ void tri::Test(const int n)
 
 // execute sur chaque tableau généré les 4 tris
     
+    cout << string(86, '-') << endl;
 
-    cout << "|" << setw(5) << "n" << "|"
+    cout << "|" << setw(10) << "n" << "|"
          << setw(20) << "Nom du Tri" << "|"
          << setw(20) << "Nombre d'echanges" << "|"
          << setw(20) << "Temps d'execution" << "|"
          << setw(10) << "est trié ?" << "|" << endl;
 
-    cout << string(81, '-') << endl;
+    cout << string(86, '-') << endl;
 
     afficherLigne(T1.data(), n);
     afficherLigne(T2.data(), n);
@@ -192,23 +192,23 @@ void tri::afficherLigne(int *T, int n)
     vector<int> temp(T, T + n);   // copie du tableau pour le remettre dans le meme désordre apres chaque tri 
     
     time_t startTime = time(NULL);
-    cout << "|" << setw(5) << n << "|" << setw(20) << "Tri à bulles" << " |" << setw(20) << TriBulles(temp.data(), n) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTrie(temp.data(), n) << "|" << endl;
+    cout << "|" << setw(10) << n << "|" << setw(20) << "Tri à bulles " << " |" << setw(20) << TriBulles(temp.data(), n) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTrie(temp.data(), n) << "|" << endl;
     temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
    
     startTime = time(NULL);
-    cout << "|" << setw(5) << n << "|" << setw(20) << "Tri par insertion" << "|" << setw(20) << TriInsertion(temp.data(), n) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTrie(temp.data(), n) << "|"<< endl;
+    cout << "|" << setw(10) << n << "|" << setw(20) << "Tri par insertion" << "|" << setw(20) << TriInsertion(temp.data(), n) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTrie(temp.data(), n) << "|"<< endl;
     temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
 
     startTime = time(NULL);
-    cout << "|" << setw(5) << n << "|" << setw(20) << "Tri rapide" << "|" << setw(20) << TriRapide(temp.data(), n, 0, n-1) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTrie(temp.data(), n) << "|" << endl;
+    cout << "|" << setw(10) << n << "|" << setw(20) << "Tri rapide" << "|" << setw(20) << TriRapide(temp.data(), n, 0, n-1) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTrie(temp.data(), n) << "|" << endl;
     temp.assign(T, T + n); // remet le tableau dans le meme désordre qu'au départ
 
     startTime = time(NULL);
-    cout << "|" << setw(5) << n << "|" << setw(20) << "Tri par tas" << "|" << setw(20) << TriTas(temp.data(), n, 0, n-1) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTas(temp.data(), n) << "|"<< endl;
-    cout << string(81, '-') << endl;
+    cout << "|" << setw(10) << n << "|" << setw(20) << "Tri par tas" << "|" << setw(20) << TriTas(temp.data(), n, 0, n-1) << "|" << setw(20) <<  difftime(time(NULL), startTime) <<  "|" << setw(10) << estTas(temp.data(), n) << "|"<< endl;
+    cout << string(86, '-') << endl;
 }
 
-void tri::affichertab(int *T, int n)
+void tri::affichertab(int *T, int n) // affiche le tableau T de taille n (pour debug)
 {
     for (int i = 0; i < n; ++i) {
         cout << T[i] << "[" << i << "]" << " ";
